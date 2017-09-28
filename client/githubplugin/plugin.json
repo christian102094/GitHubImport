@@ -1,0 +1,75 @@
+{
+	"name": "githubplugin",
+	"description": "GitHub Import Plugin",
+	"module": "githubplugin/Plugin",
+	"i18n": "githubplugin/i18n/i18n",
+	"requires": {
+		"services": [
+			"progress",
+			"command",
+			"commandGroup",
+			"perspective",
+			"selection"
+		]
+	},
+	"provides": {
+		"services": {
+			"reposearchservice": {
+				"implements": "sap.watt.common.service.ui.Part",
+				"module": "githubplugin/service/RepoSearch"
+			},
+			"githubapiservice": {
+				"implements": "githubplugin.service.GitHubAPI",
+				"module": "githubplugin/service/GitHubAPI"
+			},
+			"downloadservice": {
+				"implements": "githubplugin.service.Download",
+				"module": "githubplugin/service/Download"
+			}
+		},
+
+		"interfaces": {
+			"githubplugin.service.GitHubAPI": "githubplugin/service/GitHubAPI"
+		}
+	},
+	"configures": {
+		"services": {
+			"perspective:views": [{
+				"id": "reposearchview",
+				"service": "@reposearchservice"
+			}],
+			"perspective:viewToAreaMapping": [{
+				"view": "reposearchview",
+				"perspective": "development",
+				"area": "right"
+			}],
+			"command:commands": [{
+				"id": "reposearchcommand",
+				"label": "{i18n>command_label}.",
+				"icon": "sap-icon://sap-ui5",
+				"service": {
+					"implements": "sap.watt.common.service.ide.AbstractUIPartToggler",
+					"module": "sap.watt.common.perspective/command/AbstractUIPartToggler",
+					"configuration": {
+						"id": "reposearchcommand",
+						"service": "@reposearchservice",
+						"perspective": "development"
+					}
+				}
+			}],
+
+			"commandGroup:items": [{
+				"parent": "applicationRightSidebar",
+				"command": "reposearchcommand",
+				"prio": 101
+			}, {
+				"parent": "view",
+				"command": "reposearchcommand",
+				"prio": 101
+			}]
+		}
+	},
+	"subscribes": {
+		"selection:changed": "onSelectionChanged"
+	}
+}

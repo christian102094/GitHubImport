@@ -1,0 +1,11 @@
+{
+	"name": "githubimport",
+	"title": "githubimport",
+	"version": "1.0.0",
+	"description": "GitHub Import Feature",
+	"homepage": "",
+	"icon": "",
+	"bundledPlugins": {
+		"githubplugin": "file:githubplugin"
+	}
+}
