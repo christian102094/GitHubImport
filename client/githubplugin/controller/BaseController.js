@@ -9,7 +9,7 @@ sap.ui.define([
 		getRouter: function() {
 			return sap.ui.core.UIComponent.getRouterFor(this);
 		},
-		onNavBack: function(oEvent) {
+		onNavBack: function() {
 			var oHistory, sPreviousHash;
 
 			oHistory = History.getInstance();
@@ -78,7 +78,7 @@ sap.ui.define([
 		},
 		closeFragments: function() {
 			for (var f in _fragments) {
-				if (_fragments[f]["isOpen"] && _fragments[f].isOpen()) {
+				if (_fragments[f].isOpen && _fragments[f].isOpen()) {
 					_fragments[f].close();
 				}
 			}

@@ -46,7 +46,7 @@
 			"command:commands": [{
 				"id": "reposearchcommand",
 				"label": "{i18n>command_label}.",
-				"icon": "sap-icon://sap-ui5",
+				"icon": "sap-icon://add-coursebook",
 				"service": {
 					"implements": "sap.watt.common.service.ide.AbstractUIPartToggler",
 					"module": "sap.watt.common.perspective/command/AbstractUIPartToggler",
