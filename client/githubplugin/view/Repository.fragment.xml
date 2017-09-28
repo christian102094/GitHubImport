@@ -1,0 +1,32 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<Dialog title="Import project '{full_name}' to SAP Web IDE" showHeader="true">
+		<content>
+			<f:Form editable="false">
+				<f:layout>
+					<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4"
+						emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+				</f:layout>
+				<f:formContainers>
+					<f:FormContainer>
+						<f:formElements>
+							<f:FormElement label="Name">
+								<f:fields>
+									<Input value="{full_name}" id="name" editable="false"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Description">
+								<f:fields>
+									<Input value="{description}" editable="false"/>
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
+		</content>
+		<buttons>
+			<Button icon="sap-icon://add" press="onAdd"></Button>
+			<Button icon="sap-icon://decline" press="onClose"></Button>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

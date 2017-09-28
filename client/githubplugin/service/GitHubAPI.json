@@ -1,0 +1,50 @@
+{
+	"name": "githubplugin.service.GitHubAPI",
+	"description": "GitHub API interface",
+	"methods": {
+		"abortSearch": {
+			"description": "abort search",
+			"params": [],
+			"returns": {
+				"type": "object",
+				"description": "abort search"
+			}
+		},
+		"search": {
+			"description": "search githubapi",
+			"params": [{
+				"name": "sSearch",
+				"type": "string",
+				"description": "search"
+			}],
+			"returns": {
+				"type": "object",
+				"description": "result"
+			}
+		},
+		"getFile": {
+			"description": "get files from github api",
+			"params": [{
+				"name": "aFiles",
+				"type": "array",
+				"description": "files"
+			}],
+			"returns": {
+				"type": "object",
+				"description": "result"
+			}
+		},
+		"getRepo": {
+			"description": "get github repos",
+			"params": [{
+				"name": "sRepoName",
+				"type": "string",
+				"description": "repository"
+			}],
+			"returns": {
+				"type": "object",
+				"description": "result"
+			}
+		}
+	}
+}
