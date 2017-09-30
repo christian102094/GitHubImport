@@ -6,14 +6,31 @@ define({
 		if (this.selection.getEntity().isRoot()) { //TODO
 			return this.selection;
 		}
-		throw {
-			message: "Workspace not selected. Please select \"Workspace\" folder"
-		};
+		throw new Error("Workspace not selected. Please select \"Workspace\" folder");
 	},
-	createLibFolder: function(sDownloadPath) {
+	createLibFolder: function(sDownloadPath, bIsProjectRoot) {
+		var me = this;
 		return this.getSelection().getProject().then(function(project) {
-			return project.createFolder(sDownloadPath);
+			me.project = project;
+			return project.getChild("SAPUI5Template");
+		}).then(function(getChildResult){
+			if (!bIsProjectRoot) {
+				return me.project.createFolder(sDownloadPath);
+			} 
+			if (getChildResult === null) {
+				return me.project.createFolder(sDownloadPath);
+			} else {
+				throw new Error("Project " + sDownloadPath + " already exists");
+			}
 		});
+		
+		
+		// then(function(getChiledReturn) {
+		// 	console.log(getChiledReturn);
+		// 	throw new Error("Project " + sDownloadPath + " already exists");
+		// }, function() {
+		// 	return me.project.createFolder(sDownloadPath);
+		// });
 	},
 	createFile: function(sDownloadPath, sFile, content) {
 		var me = this;
@@ -41,7 +58,7 @@ define({
 		}).then(function() {
 			return sFile;
 		}).catch(function() {
-			console.log("[Error] Error saving content?");
+			console.log("[Error] Error saving content");
 			return sFile;
 		});
 	}

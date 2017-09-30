@@ -33,18 +33,6 @@
 				"type": "object",
 				"description": "result"
 			}
-		},
-		"getRepo": {
-			"description": "get github repos",
-			"params": [{
-				"name": "sRepoName",
-				"type": "string",
-				"description": "repository"
-			}],
-			"returns": {
-				"type": "object",
-				"description": "result"
-			}
 		}
 	}
 }

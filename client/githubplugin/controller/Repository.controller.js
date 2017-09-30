@@ -66,9 +66,11 @@ sap.ui.define(["githubplugin/controller/BaseController",
 
 				return context.service.githubapiservice.getFile(sFileUrl).then(function(contentsResult) {
 					me.contentsResult = JSON.parse(contentsResult);
-					return context.service.downloadservice.createLibFolder(data.name);
+					return context.service.downloadservice.createLibFolder(data.name, true);
 				}).then(function() {
 					return getFilesRecursive(me, sFileUrl, data, context, data.name);
+				}, function(oError) {
+					throw oError;
 				});
 			}).then(function() {
 				MessageBox.success("Finished importing the repository.");

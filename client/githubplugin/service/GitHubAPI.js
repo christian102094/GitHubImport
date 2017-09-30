@@ -3,12 +3,10 @@ define({
 	client: null,
 	$http: function(url) {
 		var me = this;
-		// A small example of object
 		var core = {
 			// Method that performs the ajax request
 			ajax: function(method, url, args) {
 
-				// Creating a promise
 				var promise = new Promise(function(resolve, reject) {
 					me.client = new XMLHttpRequest();
 
@@ -30,9 +28,6 @@ define({
 					if ("withCredentials" in me.client) {
 						// XHR for Chrome/Firefox/Opera/Safari.
 						me.client.open(method, uri, true);
-						if (uri.indexOf("search") === -1) {
-							// me.client.withCredentials = true;
-						}
 					} else if (typeof XDomainRequest !== "undefined") {
 						// XDomainRequest for IE.
 						me.client = new XDomainRequest();
@@ -40,7 +35,6 @@ define({
 					} else {
 						// CORS not supported.
 						me.client = null;
-						console.log("ERROR FATAL");
 						return;
 					}
 
@@ -48,7 +42,7 @@ define({
 					me.client.send();
 
 					me.client.onload = function() {
-						if (this.status == 200) {
+						if (this.status === 200) {
 							// Performs the function "resolve" when this.status is equal to 200
 							resolve(this.response);
 						} else {
@@ -68,26 +62,20 @@ define({
 
 		// Adapter pattern
 		return {
-			'get': function(args) {
+			"get": function(args) {
 				return core.ajax('GET', url, args);
 			},
-			'post': function(args) {
+			"post": function(args) {
 				return core.ajax('POST', url, args);
 			},
-			'put': function(args) {
+			"put": function(args) {
 				return core.ajax('PUT', url, args);
 			},
-			'delete': function(args) {
+			"delete": function(args) {
 				return core.ajax('DELETE', url, args);
 			}
 		};
 	},
-
-	foo: function(response) {
-		console.log(response.meta);
-		console.log(response.data);
-	},
-
 	search: function(sSearch) {
 		var me = this;
 
