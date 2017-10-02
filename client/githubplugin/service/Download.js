@@ -38,7 +38,7 @@ define({
 		return this.getSelection().getProject().then(function(project) {
 			return project.createFolder(sDownloadPath);
 		}).catch(function() {
-			console.log("[Error] Error creating folder");
+			console.log("[Error] Error creating folder" + sDownloadPath);
 		}).then(function(folder) {
 			me.folder = folder;
 			return folder.getChild(sFile);
