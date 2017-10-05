@@ -23,14 +23,6 @@ define({
 				throw new Error("Project " + sDownloadPath + " already exists");
 			}
 		});
-		
-		
-		// then(function(getChiledReturn) {
-		// 	console.log(getChiledReturn);
-		// 	throw new Error("Project " + sDownloadPath + " already exists");
-		// }, function() {
-		// 	return me.project.createFolder(sDownloadPath);
-		// });
 	},
 	createFile: function(sDownloadPath, sFile, content) {
 		var me = this;
@@ -38,7 +30,7 @@ define({
 		return this.getSelection().getProject().then(function(project) {
 			return project.createFolder(sDownloadPath);
 		}).catch(function() {
-			console.log("[Error] Error creating folder" + sDownloadPath);
+			throw new Error("[Error] Error creating folder" + sDownloadPath);
 		}).then(function(folder) {
 			me.folder = folder;
 			return folder.getChild(sFile);
@@ -49,6 +41,7 @@ define({
 			if (!existsFile) {
 				return me.folder.createFile(sFile);
 			}
+			// existsFile.save();
 			return existsFile;
 		}).then(function(existsFile) {
 			me.existFile = existsFile;
@@ -56,6 +49,7 @@ define({
 		}).then(function() {
 			return me.existFile.save();
 		}).then(function() {
+			
 			return sFile;
 		}).catch(function() {
 			console.log("[Error] Error saving content");

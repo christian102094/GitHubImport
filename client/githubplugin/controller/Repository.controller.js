@@ -6,41 +6,7 @@ sap.ui.define(["githubplugin/controller/BaseController",
 	"sap/m/BusyDialog"
 ], function(BaseController, Context, MessageToast, MessageBox, JSONModel, BusyDialog) {
 	"use strict";
-	var _me = this;
-	// function getFilesRecursive(me, sFileUrl, oData, context, sRootPath) {
-	// 	var aContentFilesPromises = [];
-	// 	var sPath = "";
-	// 	var aContentsResult = me.contentsResult;
-	// 	me.contentsResult = [];
-
-	// 	aContentsResult.forEach(function(oContent) {
-	// 		if (oContent.type === "file") {
-	// 			aContentFilesPromises.push(context.service.githubapiservice.getFile(oContent.download_url).then(
-	// 				function(fileResult) {
-	// 					if (oContent.path === oContent.name) {
-	// 						sPath = sRootPath + "/";
-	// 					} else {
-	// 						sPath = sRootPath + "/" + oContent.path;
-	// 						sPath = sPath.substring(0, sPath.lastIndexOf("/") + 1);
-	// 					}
-	// 					return context.service.downloadservice.createFile(sPath, oContent.name, fileResult); //TODO
-	// 				}));
-	// 		} else if (oContent.type === "dir") {
-	// 			var subPath = sRootPath + "/" + oContent.path;
-
-	// 			aContentFilesPromises.push(context.service.downloadservice.createLibFolder(subPath).then(function() {
-	// 				var sFileUrl2 = "https://api.github.com/repos/" + oData.owner.login + "/" + oData.name + "/contents/" + oContent.path;
-
-	// 				return context.service.githubapiservice.getFile(sFileUrl2).then(function(contentsResult) {
-	// 					me.contentsResult = JSON.parse(contentsResult);
-	// 					return getFilesRecursive(me, sFileUrl2, oData, context, sRootPath);
-	// 				});
-	// 			}));
-	// 		}
-	// 	});
-	// 	return Promise.all(aContentFilesPromises);
-	// }
-
+	
 	return BaseController.extend("githubplugin.controller.Repository", {
 		busyDialog: new BusyDialog({
 			showCancelButton: false
