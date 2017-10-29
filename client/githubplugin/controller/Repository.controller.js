@@ -1,12 +1,12 @@
 sap.ui.define(["githubplugin/controller/BaseController",
 	"sap/ui/model/Context",
 	"sap/m/MessageToast",
-	"sap/m/MessageBox",
+	"sap/m/MessageBox",  
 	"sap/ui/model/json/JSONModel",
 	"sap/m/BusyDialog"
 ], function(BaseController, Context, MessageToast, MessageBox, JSONModel, BusyDialog) {
 	"use strict";
-	
+
 	return BaseController.extend("githubplugin.controller.Repository", {
 		busyDialog: new BusyDialog({
 			showCancelButton: false
@@ -60,6 +60,7 @@ sap.ui.define(["githubplugin/controller/BaseController",
 			me.busyDialog.open();
 			model.refresh();
 
+			$._promises = [];
 			context.service.progress.startTask("loadRepository", "Loading repository").then(function(taskid) {
 				me.taskId = taskid;
 
@@ -71,7 +72,15 @@ sap.ui.define(["githubplugin/controller/BaseController",
 				}, function(oError) {
 					throw oError;
 				});
-			}).then(function() {
+			})/*.then(function() {
+				var ppp = [];
+				for (var v in $._promises) {
+					ppp.push($._promises[v].save());
+				}
+
+				// MessageBox.success("Finished importing the repository.");
+				return Promise.all(ppp);
+			})*/.then(function(result) {
 				MessageBox.success("Finished importing the repository.");
 			}).catch(function(error) {
 				MessageBox.error("Finished with errors", {

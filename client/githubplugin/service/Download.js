@@ -10,13 +10,15 @@ define({
 	},
 	createLibFolder: function(sDownloadPath, bIsProjectRoot) {
 		var me = this;
+		me.sDownloadPath = sDownloadPath;
+
 		return this.getSelection().getProject().then(function(project) {
 			me.project = project;
-			return project.getChild("SAPUI5Template");
-		}).then(function(getChildResult){
+			return project.getChild(me.sDownloadPath);
+		}).then(function(getChildResult) {
 			if (!bIsProjectRoot) {
 				return me.project.createFolder(sDownloadPath);
-			} 
+			}
 			if (getChildResult === null) {
 				return me.project.createFolder(sDownloadPath);
 			} else {
@@ -37,22 +39,21 @@ define({
 		}).catch(function() {
 			return me.folder.createFile(sFile);
 		}).then(function(existsFile) {
-			me.filename = sFile;
 			if (!existsFile) {
-				return me.folder.createFile(sFile);
+				var temp = me.folder;
+				return temp.createFile(sFile).then(function(temp) {
+					return temp.setContent(content).then(function() {
+						return temp.save();
+					});
+				});
 			}
 			// existsFile.save();
 			return existsFile;
-		}).then(function(existsFile) {
-			me.existFile = existsFile;
-			return existsFile.setContent(content);
 		}).then(function() {
-			return me.existFile.save();
-		}).then(function() {
-			
 			return sFile;
-		}).catch(function() {
+		}).catch(function(error) {
 			console.log("[Error] Error saving content");
+			console.log(error);
 			return sFile;
 		});
 	}
