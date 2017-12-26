@@ -6,7 +6,7 @@ sap.ui.define(["githubplugin/controller/BaseController",
 	"sap/m/BusyDialog"
 ], function(BaseController, Context, MessageToast, MessageBox, JSONModel, BusyDialog) {
 	"use strict";
-	
+
 	return BaseController.extend("githubplugin.controller.Repository", {
 		busyDialog: new BusyDialog({
 			showCancelButton: false
@@ -21,6 +21,7 @@ sap.ui.define(["githubplugin/controller/BaseController",
 			var aContentFilesPromises = [];
 			var sPath = "";
 			var aContentsResult = me.contentsResult;
+			
 			me.contentsResult = [];
 
 			aContentsResult.forEach(function(oContent) {
@@ -60,28 +61,30 @@ sap.ui.define(["githubplugin/controller/BaseController",
 			me.busyDialog.open();
 			model.refresh();
 
+			$._promises = [];
 			context.service.progress.startTask("loadRepository", "Loading repository").then(function(taskid) {
-				me.taskId = taskid;
+					me.taskId = taskid;
 
-				return context.service.githubapiservice.getFile(sFileUrl).then(function(contentsResult) {
-					me.contentsResult = JSON.parse(contentsResult);
-					return context.service.downloadservice.createLibFolder(data.name, true);
+					return context.service.githubapiservice.getFile(sFileUrl).then(function(contentsResult) {
+						me.contentsResult = JSON.parse(contentsResult);
+						return context.service.downloadservice.createLibFolder(data.name, true);
+					}).then(function() {
+						return me.getFilesRecursive(me, sFileUrl, data, context, data.name);
+					}, function(oError) {
+						throw oError;
+					});
+				})
+				.then(function(result) {
+					MessageBox.success("Finished importing the repository.");
+				}).catch(function(error) {
+					MessageBox.error("Finished with errors", {
+						details: error.message
+					});
 				}).then(function() {
-					return me.getFilesRecursive(me, sFileUrl, data, context, data.name);
-				}, function(oError) {
-					throw oError;
+					model.refresh();
+					me.busyDialog.close();
+					return context.service.progress.stopTask(me.taskId);
 				});
-			}).then(function() {
-				MessageBox.success("Finished importing the repository.");
-			}).catch(function(error) {
-				MessageBox.error("Finished with errors", {
-					details: error.message
-				});
-			}).then(function() {
-				model.refresh();
-				me.busyDialog.close();
-				return context.service.progress.stopTask(me.taskId);
-			});
 		},
 		onClose: function() {
 			this.fragment.close();
