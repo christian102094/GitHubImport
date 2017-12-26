@@ -1,7 +1,7 @@
 sap.ui.define(["githubplugin/controller/BaseController",
 	"sap/ui/model/Context",
 	"sap/m/MessageToast",
-	"sap/m/MessageBox",
+	"sap/m/MessageBox",  
 	"sap/ui/model/json/JSONModel",
 	"sap/m/BusyDialog"
 ], function(BaseController, Context, MessageToast, MessageBox, JSONModel, BusyDialog) {
@@ -85,6 +85,28 @@ sap.ui.define(["githubplugin/controller/BaseController",
 					me.busyDialog.close();
 					return context.service.progress.stopTask(me.taskId);
 				});
+<<<<<<< HEAD
+=======
+			})/*.then(function() {
+				var ppp = [];
+				for (var v in $._promises) {
+					ppp.push($._promises[v].save());
+				}
+
+				// MessageBox.success("Finished importing the repository.");
+				return Promise.all(ppp);
+			})*/.then(function(result) {
+				MessageBox.success("Finished importing the repository.");
+			}).catch(function(error) {
+				MessageBox.error("Finished with errors", {
+					details: error.message
+				});
+			}).then(function() {
+				model.refresh();
+				me.busyDialog.close();
+				return context.service.progress.stopTask(me.taskId);
+			});
+>>>>>>> refs/heads/master
 		},
 		onClose: function() {
 			this.fragment.close();
