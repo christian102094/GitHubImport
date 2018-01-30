@@ -28,6 +28,10 @@ define({
 					if ("withCredentials" in me.client) {
 						// XHR for Chrome/Firefox/Opera/Safari.
 						me.client.open(method, uri, true);
+
+						// me.client.setRequestHeader("Content-Type", "application/json");
+						// Authorization Header
+						me.client.setRequestHeader("Authorization", "Basic " + btoa("christiants89@gmail.com" + ":" + "Christian5400498###ggg"));
 					} else if (typeof XDomainRequest !== "undefined") {
 						// XDomainRequest for IE.
 						me.client = new XDomainRequest();
@@ -38,7 +42,6 @@ define({
 						return;
 					}
 
-					// me.client.open(method, uri);
 					me.client.send();
 
 					me.client.onload = function() {
