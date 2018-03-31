@@ -2,9 +2,10 @@
 	"name": "githubimport",
 	"title": "GitHub Import",
 	"version": "1.0.0",
-	"description": "GitHub Import Feature",
+	"description": "Feature to easily import projects from GitHub",
 	"homepage": "",
 	"icon": "",
+	"author": "Christian Tapia S.",
 	"bundledPlugins": {
 		"githubplugin": "file:githubplugin"
 	}

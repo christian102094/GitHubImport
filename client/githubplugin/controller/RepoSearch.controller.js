@@ -19,14 +19,26 @@ sap.ui.define(["githubplugin/controller/BaseController",
 			var sSearch = oView.getModel().getProperty("/search");
 			var context = oView.getViewData().context;
 
+			// Abort HTTP calls from GitHub service
 			context.service.githubapiservice.abortSearch();
 
 			if (me.taskId) {
 				context.service.progress.stopTask(me.taskId);
 			}
 
+			// TODO
+			var sToken = window.sessionStorage.getItem("github_token");
+			if (!sToken) {
+				this.openFragment("githubplugin.view.GitHubLogin", null, true, false, {
+					path: ""
+				});
+			}
+
+			// Start new task
 			context.service.progress.startTask("searchrepositories", "Search repositories").then(function(taskId) {
 				me.taskId = taskId;
+
+				// Search repositories in GitHub
 				return context.service.githubapiservice.search(sSearch).then(function(result) {
 					var transformedResult = [];
 
@@ -34,6 +46,7 @@ sap.ui.define(["githubplugin/controller/BaseController",
 						transformedResult.push(oRepo);
 					});
 
+					// Update model with GitHub repository list
 					me.getView().getModel().setProperty("/items", transformedResult);
 					me.getView().getModel().setProperty("/total_count", result.total_count);
 
@@ -44,12 +57,14 @@ sap.ui.define(["githubplugin/controller/BaseController",
 				});
 			});
 		},
+
 		onSelectionChange: function(oEvent) {
 			var me = this;
 			var listItem = oEvent.getParameter("listItem");
+			var path;
 
 			if (listItem) {
-				var path = listItem.getBindingContextPath();
+				path = listItem.getBindingContextPath();
 			}
 
 			if (path) {
@@ -58,6 +73,7 @@ sap.ui.define(["githubplugin/controller/BaseController",
 				});
 			}
 		},
+
 		onCancel: function() {
 			var context = this.getView().getViewData().context;
 			context.service.githubapiservice.abortSearch();

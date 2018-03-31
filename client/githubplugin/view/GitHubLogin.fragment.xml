@@ -1,0 +1,32 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<Dialog title="Login to GitHub" showHeader="true">
+		<content>
+			<f:Form editable="false">
+				<f:layout>
+					<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4"
+						emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+				</f:layout>
+				<f:formContainers>
+					<f:FormContainer>
+						<f:formElements>
+							<f:FormElement label="User:">
+								<f:fields>
+									<Input id="userInput" editable="true"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Password:">
+								<f:fields>
+									<Input id="passwordInput" type="Password" editable="true" placeholder="Password" />
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
+		</content>
+		<buttons>
+			<Button icon="sap-icon://add" press="onAdd"></Button>
+			<Button icon="sap-icon://decline" press="onClose"></Button>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

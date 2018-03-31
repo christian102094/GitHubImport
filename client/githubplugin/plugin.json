@@ -1,6 +1,6 @@
 {
 	"name": "githubplugin",
-	"description": "GitHub Import Plugin",
+	"description": "GitHub Import plugin",
 	"module": "githubplugin/Plugin",
 	"i18n": "githubplugin/i18n/i18n",
 	"requires": {
@@ -27,7 +27,6 @@
 				"module": "githubplugin/service/Download"
 			}
 		},
-
 		"interfaces": {
 			"githubplugin.service.GitHubAPI": "githubplugin/service/GitHubAPI"
 		}
@@ -70,6 +69,6 @@
 		}
 	},
 	"subscribes": {
-		"selection:changed": "onSelectionChanged"
+		"selection:changed": "onProjectSelectionChanged"
 	}
 }

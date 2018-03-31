@@ -2,7 +2,7 @@ define(
 	["sap/watt/platform/plugin/platform/service/ui/AbstractPart"],
 	function(AbstractPart) {
 		"use strict";
-		var oRepoSearch = AbstractPart.extend("githubplugin.service.RepoSearch.", {
+		var oRepoSearchPanePart = AbstractPart.extend("githubplugin.service.RepoSearch.", {
 			_oView: null,
 			getContent: function() {
 				var that = this;
@@ -20,5 +20,5 @@ define(
 				});
 			}
 		});
-		return oRepoSearch;
+		return oRepoSearchPanePart;
 	});

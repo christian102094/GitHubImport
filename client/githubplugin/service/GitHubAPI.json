@@ -33,6 +33,22 @@
 				"type": "object",
 				"description": "result"
 			}
+		},
+		"searchAuthorization": {
+			"description": "search for authorization",
+			"params": [{
+				"name": "sUser",
+				"type": "string",
+				"description": "user"
+			}, {
+				"name": "sPassword",
+				"type": "string",
+				"description": "password"
+			}],
+			"returns": {
+				"type": "object",
+				"description": "result"
+			}
 		}
 	}
 }

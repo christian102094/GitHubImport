@@ -32,16 +32,6 @@ sap.ui.define(["githubplugin/controller/BaseController",
 			aContentsResult.forEach(function(oContent) {
 				if (oContent.type === "file") {
 					var _sFileUrl = "https://api.github.com/repos/" + oData.owner.login + "/" + oData.name + "/contents/" + oContent.path;
-					// aContentFilesPromises.push(context.service.githubapiservice.getFile(oContent.download_url).then(
-					// 	function(fileResult) {
-					// 		if (oContent.path === oContent.name) {
-					// 			sPath = sRootPath + "/";
-					// 		} else {
-					// 			sPath = sRootPath + "/" + oContent.path;
-					// 			sPath = sPath.substring(0, sPath.lastIndexOf("/") + 1);
-					// 		}
-					// 		return context.service.downloadservice.createFile(sPath, oContent.name, fileResult); //TODO
-					// 	}));
 
 					aContentFilesPromises.push(context.service.githubapiservice.getFile(_sFileUrl).then(
 						function(fileResult) {
@@ -54,11 +44,6 @@ sap.ui.define(["githubplugin/controller/BaseController",
 							var content = me.b64DecodeUnicode(JSON.parse(fileResult).content.replace(/[\n]/g, ""));
 							return context.service.downloadservice.createFile(sPath, oContent.name, content); //TODO
 						}));
-
-					// if (oContent.content.replace) {
-					// 	var fileResult = atob(oContent.content.replace(/[\r\n]/g, ""));
-					// 	aContentFilesPromises.push(context.service.downloadservice.createFile(sPath, oContent.name, fileResult));
-					// }
 				} else if (oContent.type === "dir") {
 					var subPath = sRootPath + "/" + oContent.path;
 
