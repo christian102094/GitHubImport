@@ -2,7 +2,7 @@ define({
 	setSelection: function(oSelection) {
 		this.selection = oSelection;
 	},
-	getSelection: function() {
+	_getSelection: function() {
 		if (this.selection.getEntity().isRoot()) { //TODO
 			return this.selection;
 		}
@@ -12,7 +12,7 @@ define({
 		var me = this;
 		me.sDownloadPath = sDownloadPath;
 
-		return this.getSelection().getProject().then(function(project) {
+		return this._getSelection().getProject().then(function(project) {
 			me.project = project;
 			return project.getChild(me.sDownloadPath);
 		}).then(function(getChildResult) {
@@ -29,7 +29,7 @@ define({
 	createFile: function(sDownloadPath, sFile, content) {
 		var me = this;
 
-		return this.getSelection().getProject().then(function(project) {
+		return this._getSelection().getProject().then(function(project) {
 			return project.createFolder(sDownloadPath);
 		}).catch(function() {
 			throw new Error("[Error] Error creating folder" + sDownloadPath);

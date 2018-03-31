@@ -31,7 +31,7 @@ sap.ui.define(["githubplugin/controller/BaseController",
 			if (!sToken) {
 				this.openFragment("githubplugin.view.GitHubLogin", null, true, false, {
 					path: ""
-				});
+				}, true); 
 			}
 
 			// Start new task
@@ -39,22 +39,22 @@ sap.ui.define(["githubplugin/controller/BaseController",
 				me.taskId = taskId;
 
 				// Search repositories in GitHub
-				return context.service.githubapiservice.search(sSearch).then(function(result) {
-					var transformedResult = [];
+				return context.service.githubapiservice.search(sSearch);
+			}).then(function(result) {
+				var transformedResult = [];
 
-					result.items.forEach(function(oRepo) {
-						transformedResult.push(oRepo);
-					});
-
-					// Update model with GitHub repository list
-					me.getView().getModel().setProperty("/items", transformedResult);
-					me.getView().getModel().setProperty("/total_count", result.total_count);
-
-					return context.service.progress.stopTask(me.taskId);
-				}).catch(function() {
-					MessageBox.error("Error during search, try again later...");
-					return context.service.progress.stopTask(me.taskId);
+				result.items.forEach(function(oRepo) {
+					transformedResult.push(oRepo);
 				});
+
+				// Update model with GitHub repository list
+				me.getView().getModel().setProperty("/items", transformedResult);
+				me.getView().getModel().setProperty("/total_count", result.total_count);
+
+				return context.service.progress.stopTask(me.taskId);
+			}).catch(function() {
+				MessageBox.error("Error during search, try again later...");
+				return context.service.progress.stopTask(me.taskId);
 			});
 		},
 

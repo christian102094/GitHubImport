@@ -25,7 +25,7 @@
 			</f:Form>
 		</content>
 		<buttons>
-			<Button icon="sap-icon://add" press="onAdd"></Button>
+			<Button icon="sap-icon://accept" press="onLogin"></Button>
 			<Button icon="sap-icon://decline" press="onClose"></Button>
 		</buttons>
 	</Dialog>

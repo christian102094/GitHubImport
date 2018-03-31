@@ -30,24 +30,33 @@ sap.ui.define([
 		getResourceBundle: function() {
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
-		openFragment: function(sName, model, updateModelAlways, callback, data) {
+		openFragment: function(sName, model, updateModelAlways, callback, data, bNoViewInId) {
+			var aViewName, controller;
+
 			if (sName.indexOf(".") > 0) {
-				var aViewName = sName.split(".");
+				aViewName = sName.split(".");
 				sName = sName.substr(sName.lastIndexOf(".") + 1);
 			} else { //current folder
-				aViewName = this.getView().getViewName().split("."); // view.login.Login
+				aViewName = this.getView().getViewName().split(".");
 			}
 			aViewName.pop();
-			var sViewPath = aViewName.join("."); // view.login
+			var sViewPath = aViewName.join(".");
 			sViewPath += ".";
+			
 			//create controller
 			var sControllerPath = sViewPath.replace("view", "controller");
 			try {
-				var controller = sap.ui.controller(sControllerPath + sName);
+				controller = sap.ui.controller(sControllerPath + sName);
 			} catch (ex) {
 				controller = this;
 			}
 			var id = this.getView().getId() + "-" + sName;
+			
+			// CTS: Adapted
+			if (bNoViewInId){
+				id = sName;
+			}
+			
 			if (!_fragments[id]) {
 				_fragments[id] = sap.ui.xmlfragment(
 					id,

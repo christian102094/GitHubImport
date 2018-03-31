@@ -12,13 +12,15 @@ sap.ui.define(["githubplugin/controller/BaseController",
 		busyDialog: new BusyDialog({
 			showCancelButton: false
 		}).addStyleClass("busy_indicator"),
+
 		onBeforeShow: function(parent, fragment, callback, data) {
 			this.parent = parent;
 			this.fragment = fragment;
 			this.data = data;
 			this.fragment.bindElement(data.path);
 		},
-		onAdd: function() {
+
+		onLogin: function() {
 			var me = this,
 				context = this.parent.getView().getViewData().context,
 				model = this.fragment.getModel();
@@ -27,18 +29,13 @@ sap.ui.define(["githubplugin/controller/BaseController",
 			model.refresh();
 
 			$._promises = [];
-			context.service.progress.startTask("loginToGitHub", "Authenticating to GitHub").then(function(taskid) {
+			return context.service.progress.startTask("loginToGitHub", "Authenticating to GitHub").then(function(taskid) {
 				me.taskId = taskid;
 
-				return context.service.githubapiservice.searchAuthorization(Fragment.byId("__xmlview1-GitHubLogin", "userInput").getValue(),
-					Fragment.byId("__xmlview1-GitHubLogin", "passwordInput").getValue()).then(function(oResponse) {
-					// OK
-				}, function(oError) {
-					throw oError;
-				});
+				return context.service.githubapiservice.searchAuthorization(Fragment.byId("GitHubLogin", "userInput").getValue(),
+					Fragment.byId("GitHubLogin", "passwordInput").getValue());
 			}).then(function(result) {
-				// MessageBox.success("Finished importing the repository.");
-				me.fragment.close();
+				return me.fragment.close();
 			}).catch(function(error) {
 				MessageBox.error("Finished with errors", {
 					details: error.message

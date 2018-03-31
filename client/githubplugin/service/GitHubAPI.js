@@ -35,8 +35,8 @@ define({
 								me.client.setRequestHeader("Authorization", "Basic " + btoa(auth.user + ":" + auth.password));
 							}
 						} else {
-							var sGitHubUser = me.getFromSessionStorage("github_user");
-							var sGitHubToken = me.getFromSessionStorage("github_token");
+							var sGitHubUser = me._getFromSessionStorage("github_user");
+							var sGitHubToken = me._getFromSessionStorage("github_token");
 							me.client.setRequestHeader("Authorization", "Basic " + btoa(sGitHubUser + ":" + sGitHubToken));
 						}
 
@@ -114,12 +114,12 @@ define({
 		return me.$http(sFileUrl).get();
 	},
 
-	getObjects: function(obj, key, val) {
+	_getObjects: function(obj, key, val) {
 		var objects = [];
 		for (var i in obj) {
 			if (!obj.hasOwnProperty(i)) continue;
 			if (typeof obj[i] == 'object') {
-				objects = objects.concat(this.getObjects(obj[i], key, val));
+				objects = objects.concat(this._getObjects(obj[i], key, val));
 			} else
 			//if key matches and value matches or if key matches and value is not passed (eliminating the case where key matches but passed value does not)
 			if (i == key && obj[i] == val || i == key && val == '') { //
@@ -133,7 +133,7 @@ define({
 		}
 		return objects;
 	},
-	saveToSessionStorage: function(sKey, sValue) {
+	_saveToSessionStorage: function(sKey, sValue) {
 		if (typeof(Storage) !== "undefined") {
 			window.sessionStorage.setItem(sKey, sValue);
 		} else {
@@ -141,7 +141,7 @@ define({
 			// TODO
 		}
 	},
-	getFromSessionStorage: function(sKey) {
+	_getFromSessionStorage: function(sKey) {
 		if (typeof(Storage) !== "undefined") {
 			return window.sessionStorage.getItem(sKey);
 		} else {
@@ -176,8 +176,8 @@ define({
 				oMessage = oMessage.replace("Code::201\n", "");
 				var sToken = JSON.parse(oMessage).token;
 				// TODO save token en Browser Storage
-				me.saveToSessionStorage("github_user", sUser);
-				me.saveToSessionStorage("github_token", sToken);
+				me._saveToSessionStorage("github_user", sUser);
+				me._saveToSessionStorage("github_token", sToken);
 			}
 
 			// If authorization already exists
@@ -185,7 +185,7 @@ define({
 				// Get authorizations list
 				return me.$http(sURL).get(false, oAuth).then(function(oResponse) {
 					// Get authorization ID
-					var node = me.getObjects(JSON.parse(oResponse), "note", "GitHub Plugin - SAP Web IDE");
+					var node = me._getObjects(JSON.parse(oResponse), "note", "GitHub Plugin - SAP Web IDE");
 					return node["0"].id;
 				}).then(function(nId) {
 					// Delete the authorization
@@ -200,8 +200,8 @@ define({
 									oMessage = oMessage.replace("Code::201\n", "");
 									var sToken = JSON.parse(oMessage).token;
 									// TODO save token en Browser Storage
-									me.saveToSessionStorage("github_user", sUser);
-									me.saveToSessionStorage("github_token", sToken);
+									me._saveToSessionStorage("github_user", sUser);
+									me._saveToSessionStorage("github_token", sToken);
 								} else {
 									// TODO handle error
 									console.log("Error not handled");
