@@ -21,33 +21,40 @@ sap.ui.define(["githubplugin/controller/BaseController",
 		},
 
 		onLogin: function() {
-			var me = this,
+			var _this = this,
 				context = this.parent.getView().getViewData().context,
 				model = this.fragment.getModel();
 
-			me.busyDialog.open();
+			_this.busyDialog.open();
 			model.refresh();
 
 			$._promises = [];
 			return context.service.progress.startTask("loginToGitHub", "Authenticating to GitHub").then(function(taskid) {
-				me.taskId = taskid;
+				_this.taskId = taskid;
 
 				return context.service.githubapiservice.searchAuthorization(Fragment.byId("GitHubLogin", "userInput").getValue(),
 					Fragment.byId("GitHubLogin", "passwordInput").getValue());
 			}).then(function(result) {
-				return me.fragment.close();
+				// CTS
+				if (_this._resolve) {
+					_this._resolve();
+					// this._resolve = null;
+				}
+				return _this.fragment.close();
 			}).catch(function(error) {
 				MessageBox.error("Finished with errors", {
 					details: error.message
 				});
+				// CTS
+				if (_this._reject) {
+					_this._reject();
+					// this._resolve = null;
+				}
 			}).then(function() {
 				model.refresh();
-				me.busyDialog.close();
-				return context.service.progress.stopTask(me.taskId);
+				_this.busyDialog.close();
+				return context.service.progress.stopTask(_this.taskId);
 			});
-		},
-		onClose: function() {
-			this.fragment.close();
 		}
 	});
 });

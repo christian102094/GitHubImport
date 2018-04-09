@@ -9,7 +9,8 @@
 			"command",
 			"commandGroup",
 			"perspective",
-			"selection"
+			"selection",
+			"preferences"
 		]
 	},
 	"provides": {

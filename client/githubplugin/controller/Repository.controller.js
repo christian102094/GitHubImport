@@ -22,7 +22,7 @@ sap.ui.define(["githubplugin/controller/BaseController",
 				return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
 			}).join(""));
 		},
-		getFilesRecursive: function getFilesRec(me, sFileUrl, oData, context, sRootPath) {
+		_getFilesRecursive: function getFilesRec(me, sFileUrl, oData, context, sRootPath) {
 			var aContentFilesPromises = [];
 			var sPath = "";
 			var aContentsResult = me.contentsResult;
@@ -59,6 +59,7 @@ sap.ui.define(["githubplugin/controller/BaseController",
 			});
 			return Promise.all(aContentFilesPromises);
 		},
+		
 		onAdd: function() {
 			var me = this,
 				context = this.parent.getView().getViewData().context,
@@ -70,14 +71,14 @@ sap.ui.define(["githubplugin/controller/BaseController",
 			model.refresh();
 
 			$._promises = [];
-			context.service.progress.startTask("loadRepository", "Loading repository").then(function(taskid) {
+			return context.service.progress.startTask("loadRepository", "Loading repository").then(function(taskid) {
 					me.taskId = taskid;
 
 					return context.service.githubapiservice.getFile(sFileUrl).then(function(contentsResult) {
 						me.contentsResult = JSON.parse(contentsResult);
 						return context.service.downloadservice.createLibFolder(data.name, true);
 					}).then(function() {
-						return me.getFilesRecursive(me, sFileUrl, data, context, data.name);
+						return me._getFilesRecursive(me, sFileUrl, data, context, data.name);
 					}, function(oError) {
 						throw oError;
 					});
@@ -93,9 +94,10 @@ sap.ui.define(["githubplugin/controller/BaseController",
 					me.busyDialog.close();
 					return context.service.progress.stopTask(me.taskId);
 				});
-		},
-		onClose: function() {
-			this.fragment.close();
 		}
+		
+		// onClose: function() {
+		// 	this.fragment.close();
+		// }
 	});
 });

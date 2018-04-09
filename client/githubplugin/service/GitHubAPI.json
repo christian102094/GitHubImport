@@ -49,6 +49,34 @@
 				"type": "object",
 				"description": "result"
 			}
+		},
+		"saveToPreferences": {
+			"description": "Save key value to user preferences",
+			"params":[{
+				"name": "sKey",
+				"type": "string",
+				"description": "key"
+			},{
+				"name": "sValue",
+				"type": "string",
+				"description": "user"
+			}],
+			"returns":{
+				"type":"object",
+				"description": "result"
+			}
+		},
+		"getFromPreferences": {
+			"description": "Get value from user preferences",
+			"params":[{
+				"name": "sKey",
+				"type": "string",
+				"description": "key"
+			}],
+			"returns":{
+				"type":"object",
+				"description": "value"
+			}
 		}
 	}
 }

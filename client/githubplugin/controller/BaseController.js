@@ -42,7 +42,7 @@ sap.ui.define([
 			aViewName.pop();
 			var sViewPath = aViewName.join(".");
 			sViewPath += ".";
-			
+
 			//create controller
 			var sControllerPath = sViewPath.replace("view", "controller");
 			try {
@@ -51,12 +51,12 @@ sap.ui.define([
 				controller = this;
 			}
 			var id = this.getView().getId() + "-" + sName;
-			
+
 			// CTS: Adapted
-			if (bNoViewInId){
+			if (bNoViewInId) {
 				id = sName;
 			}
-			
+
 			if (!_fragments[id]) {
 				_fragments[id] = sap.ui.xmlfragment(
 					id,
@@ -80,11 +80,21 @@ sap.ui.define([
 			setTimeout(function() {
 				fragment.open();
 			}, 100);
+
+			// CTS 
+			return new Promise(function(resolve, reject) {
+				if (controller) {
+					controller._resolve = resolve;
+					controller._reject = reject;
+				}
+			});
 		},
+		
 		getFragmentControlById: function(parent, id) {
 			var latest = this.getMetadata().getName().split(".")[this.getMetadata().getName().split(".").length - 1];
 			return sap.ui.getCore().byId(parent.getView().getId() + "-" + latest + "--" + id);
 		},
+		
 		closeFragments: function() {
 			for (var f in _fragments) {
 				if (_fragments[f].isOpen && _fragments[f].isOpen()) {
@@ -92,8 +102,13 @@ sap.ui.define([
 				}
 			}
 		},
+		
 		getFragment: function(fragment) {
 			return _fragments[this.getView().getId() + "-" + fragment];
+		},
+
+		onClose: function() {
+			this.fragment.close();
 		}
 	});
 });
