@@ -59,7 +59,7 @@ sap.ui.define(["githubplugin/controller/BaseController",
 			});
 			return Promise.all(aContentFilesPromises);
 		},
-		
+
 		onAdd: function() {
 			var me = this,
 				context = this.parent.getView().getViewData().context,
@@ -67,13 +67,14 @@ sap.ui.define(["githubplugin/controller/BaseController",
 				data = this.fragment.getBindingContext().getObject(),
 				sFileUrl = "https://api.github.com/repos/" + data.owner.login + "/" + data.name + "/contents";
 
-			me.busyDialog.open();
+			// me.busyDialog.open();
 			model.refresh();
 
 			$._promises = [];
 			return context.service.progress.startTask("loadRepository", "Loading repository").then(function(taskid) {
 					me.taskId = taskid;
-
+					me.onClose(); // CTS
+					
 					return context.service.githubapiservice.getFile(sFileUrl).then(function(contentsResult) {
 						me.contentsResult = JSON.parse(contentsResult);
 						return context.service.downloadservice.createLibFolder(data.name, true);
@@ -91,13 +92,9 @@ sap.ui.define(["githubplugin/controller/BaseController",
 					});
 				}).then(function() {
 					model.refresh();
-					me.busyDialog.close();
+					// me.busyDialog.close();
 					return context.service.progress.stopTask(me.taskId);
 				});
 		}
-		
-		// onClose: function() {
-		// 	this.fragment.close();
-		// }
 	});
 });

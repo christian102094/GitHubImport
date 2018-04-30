@@ -37,7 +37,7 @@ define({
 						} else {
 							var sGitHubUser = me.aCredentials.github_user;
 							var sGitHubToken = me.aCredentials.github_token;
-						
+
 							me.client.setRequestHeader("Authorization", "Basic " + btoa(sGitHubUser + ":" + sGitHubToken));
 						}
 
@@ -229,6 +229,10 @@ define({
 				}).catch(function(oMessage) {
 					console.log("nIdError not handled"); // TODO
 				});
+			} else {
+				throw {
+					message: "Authentication failed!"
+				};
 			}
 		});
 	}
